@@ -4,10 +4,17 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AppComponent } from './app.component';
 import { FlagService } from './flag.service';
+import { FlagModel } from './models';
 
+let flagModel: FlagModel = {
+  flagDescription: [{ code: '-dev-', desc: 'lorem' }],
+  employeeFlag: 'lorem',
+  region: { code: '-dev-', desc: 'lorem' },
+  user: 'lorem',
+};
 let mockFlagService;
 let fixture: ComponentFixture<AppComponent>;
 describe('AppComponent', () => {
@@ -34,7 +41,7 @@ describe('AppComponent', () => {
     );
   });
   it('should call subscribe method', fakeAsync(() => {
-    mockFlagService.getFlag.and.returnValue(of('-dev-'));
+    mockFlagService.getFlag.and.returnValue(of(flagModel));
 
     fixture.componentInstance.ngOnit();
     tick();
@@ -42,7 +49,7 @@ describe('AppComponent', () => {
     expect(mockFlagService['getFlag']).toHaveBeenCalled();
   }));
   it('should set image to dev When getFlag returns dev', fakeAsync(() => {
-    mockFlagService.getFlag.and.returnValue(of('-dev-'));
+    mockFlagService.getFlag.and.returnValue(of(flagModel));
 
     fixture.componentInstance.ngOnit();
     tick();
@@ -52,7 +59,11 @@ describe('AppComponent', () => {
     );
   }));
   it('should set image to qa When getFlag returns qa', fakeAsync(() => {
-    mockFlagService.getFlag.and.returnValue(of('-qa-'));
+    let qaflagModel = {
+      ...flagModel,
+      flagDescription: [{ code: '-qa-', desc: 'lorem' }],
+    };
+    mockFlagService.getFlag.and.returnValue(of(qaflagModel));
 
     fixture.componentInstance.ngOnit();
     tick();
@@ -60,7 +71,11 @@ describe('AppComponent', () => {
     expect(fixture.componentInstance.title).toEqual('../assessts/icons/qa.png');
   }));
   it('should set image to prod When getFlag returns prod', fakeAsync(() => {
-    mockFlagService.getFlag.and.returnValue(of('-prod-'));
+    let prodflagModel = {
+      ...flagModel,
+      flagDescription: [{ code: '-prod-', desc: 'lorem' }],
+    };
+    mockFlagService.getFlag.and.returnValue(of(prodflagModel));
 
     fixture.componentInstance.ngOnit();
     tick();

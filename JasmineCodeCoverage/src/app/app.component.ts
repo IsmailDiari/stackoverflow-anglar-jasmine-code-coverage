@@ -17,7 +17,7 @@ export class AppComponent {
   ngOnit() {
     this.service.getFlag().subscribe(
       (res) => {
-        this.flag = res.match(this.regex)[1];
+        this.flag = res.flagDescription[0].code.match(this.regex)[1];
 
         if (this.flag === 'dev') {
           this.title = '../assessts/icons/dev.png';
